@@ -5,7 +5,7 @@ const port = process.env.PORT || 5000;
 const app = express();
 
 app.get('/api/tareas', (req, res) => {
-    res.json({mensaje: 'mostrar las tareas'})
+    res.status(200).json({mensaje: 'mostrar las tareas'});
 })
 
 app.listen(port, () => console.log(`Server iniciado en el puerto ${port}`))
