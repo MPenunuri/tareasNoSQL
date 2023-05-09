@@ -14,7 +14,6 @@ const deleteTareas = (req, res) => {
     res.status(200).json({mensaje: `Eliminar la tarea ${req.params.id}`});
 }
 
-
 module.exports = {
     getTareas,
     setTareas, 
