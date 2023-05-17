@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 const asyncHandler = require('express-async-handler');
 const User = require('../models/userModel');
 
@@ -24,15 +24,13 @@ const registerUser = asyncHandler(async (req,res) => {
     }
 
     //Hash al password
-
-    // PENDIENTE REVISAR LAS SIGUIENTES LINEAS
-    //const salt = bcrypt.genSalt(10) //Se genera una cadena de texto aleatoria
-    //const hashedPassword = await bcrypt.hash(password, salt)
+    const salt = bcrypt.genSalt(10); //Se genera una cadena de texto aleatoria
+    const hashedPassword = await bcrypt.hash(password, parseInt(salt));
 
     const user = await User.create({
         name,
         email,
-        password
+        password: hashedPassword
     });
 
     if(user){
@@ -46,8 +44,6 @@ const registerUser = asyncHandler(async (req,res) => {
         throw new Error('No se pudo crear el usuraio.')
 
     }
-
-    res.json({message:'Registrar usuario'})
 })
 
 const getMisDatos = asyncHandler(async (req,res) => {
