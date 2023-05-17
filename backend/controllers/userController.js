@@ -4,7 +4,26 @@ const asyncHandler = require('express-async-handler');
 const User = require('../models/userModel');
 
 const loginUser = asyncHandler(async (req,res) => {
-    res.json({message:'Login'});
+
+    const { email, password } = req.body;
+
+    if(!email || !password){
+        res.status(400);
+        throw new Error('Favor de verificar que estén todos los datos.')
+    }
+
+    const user = await User.findOne({email});
+
+    if(user && (await bcrypt.compare(password, user.password))){
+        res.status(200).json({
+            message: '¡Bienvenido!',
+            _id: user.id,
+            name: user.name,
+            email: user.email
+        });
+    } else {
+        throw new Error('Credenciales incorrectas');
+    }
 });
 
 const registerUser = asyncHandler(async (req,res) => {
