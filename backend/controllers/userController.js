@@ -19,7 +19,8 @@ const loginUser = asyncHandler(async (req,res) => {
             message: '¡Bienvenido!',
             _id: user.id,
             name: user.name,
-            email: user.email
+            email: user.email,
+            token: generateToken(user.id)
         });
     } else {
         throw new Error('Credenciales incorrectas');
@@ -68,6 +69,12 @@ const registerUser = asyncHandler(async (req,res) => {
 const getMisDatos = asyncHandler(async (req,res) => {
     res.json({message:'Mis datos'})
 })
+
+const generateToken = (id) => {
+    return jwt.sign({ id }, process.env.JWT_SECRET,{
+        expiresIn: '30d'
+    })
+}
 
 module.exports = {
     loginUser,
